@@ -1,0 +1,45 @@
+---
+title: "Mapping Basics Exercise"
+author: "Devon Mastin"
+output: 
+  html_document:
+    toc: yes
+    toc_flota: TRUE
+    collapsed: no
+    smooth_scroll: yes
+    df_print: paged
+  editor_options:
+    chunk_output_type: inline
+    mode: gfm
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, error = FALSE)
+pacman::p_load("leaflet", "sf", "tidyverse", "sp", "mapview", "maps", "mapdata")
+```
+
+The dataset that I am using for these maps comes from meuse dataset in the sp package. It contains data on heavy metals measured in the top soil along the Meuse River in the Netherlands. 
+
+## Simple Map
+
+This is a static map of the Netherlands and includes a visual of the Meuse River.
+```{r}
+map("world2", "Netherlands", col = 4, fill = TRUE)
+lines(c(-4.05, -5.75, -6.05, -6.60), c(51.55, 51.52, 51.35, 51.12), col = "blue", lwd = 2)
+title("Map of the Netherlands with Meuse River")
+```
+
+
+## Interactive Map
+
+This map uses the mapview package to create an interactive map of the meuse river region with included measurements from each data point.
+
+```{r}
+data("meuse")
+coordinates(meuse) <- ~x + y
+proj4string(meuse) <- CRS("+init=epsg:28992")
+mapview(meuse)
+```
+
+
